@@ -6,7 +6,17 @@
         xmlns:local="clr-namespace:XamlOnlyTwitterClient"
         mc:Ignorable="d"
         Title="XamlOnlyTwitterCilent" Height="350" Width="525">
-    <Grid>
-        
-    </Grid>
+
+    <Window.Resources>
+        <XmlDataProvider x:Key="Feed" Source="http://twitrss.me/twitter_user_to_rss/?user=Snowden"  ></XmlDataProvider>
+    </Window.Resources>
+    <DockPanel DataContext="{Binding Source={StaticResource Feed}, XPath=/rss/channel/item}">
+        <TextBox DockPanel.Dock="Top" Text="{Binding Source={StaticResource Feed}, BindsDirectlyToSource=True, Path=Source, UpdateSourceTrigger=PropertyChanged}">
+            
+        </TextBox>
+        <Label DockPanel.Dock="Top" Content="{Binding XPath=/rss/channel/title}" FontSize="14" FontWeight="Bold"/>
+        <Label DockPanel.Dock="Top" Content="{Binding XPath=/rss/channel/description}" FontSize="14" FontWeight="Bold"/>
+        <ListBox DockPanel.Dock="Left" DisplayMemberPath="title" ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" Width="300"/>
+        <Frame Source="{Binding XPath=link}"/>
+    </DockPanel>
 </Window>
